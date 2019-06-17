@@ -18,12 +18,16 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 
 export class Journal{
 
+	public journal :any;
 	public month: any;
 	public event_date: any = '';
 	public title: any = '';
 	public content: any = '';
 	public user: any;
 	public photo: any;
+	public journal_id: any;
+	public count: number = 0;
+	public photos: any = [];
 
 	constructor(
 		public http: Http,
@@ -49,6 +53,19 @@ export class Journal{
 		console.log(this.event_date);
 
 
+
+	}
+
+	getJournalLast(){
+		this.apiCtrl.get('journals').then(data =>{
+			console.log('JORUNALSGET:', data);
+			
+			this.journal = data;
+		});
+
+
+
+
 	}
 
 	takePhoto(){
@@ -57,7 +74,7 @@ export class Journal{
 			  quality: 100,
 			  sourceType: this.camera.PictureSourceType.CAMERA,
 			  correctOrientation:true,
-			  destinationType: this.camera.DestinationType.FILE_URI,
+        destinationType: this.camera.DestinationType.DATA_URL,
 			  encodingType: this.camera.EncodingType.JPEG,
 			  mediaType: this.camera.MediaType.PICTURE,
 			  targetWidth: 1000,
@@ -65,8 +82,12 @@ export class Journal{
 		}
 
 		this.camera.getPicture(options).then((imageData) => {	
-		 	this.photo = 'data:image/jpeg;base64,' + imageData;
+		 	
+		 	this.photos[this.count] = this.photo = 'data:image/jpeg;base64,' + imageData;
+		  
+		  this.count++;
 
+			this.getJournalLast();
 			// var body: any = {
 			// 	photo: this.photo,
 
@@ -77,7 +98,28 @@ export class Journal{
 		});
 	}
 
+	savePhoto(id){
+		
+		if (this.photo || (this.photo && this.photo.length > 0)) {
+      let body: any = {
+
+          src: this.photo,
+         	journal_id: id
+      
+     	};
+
+     	let url = 'journals/'+ id +'/photos';
+
+      this.apiCtrl.post(url, body).then(data => {
+					console.log("Take Photo:", data);
+
+          
+      });
+    }
+	}
+
 	saveJournal(){
+
 
 		var body: any = {
 			title: this.title,
@@ -87,10 +129,16 @@ export class Journal{
 		}
 
 		this.apiCtrl.post("journals", body).then(data => {
-			console.log("Exito", data);
+			console.log("Exito----------------", data);
 
+			this.journal = data;
+
+			this.savePhoto(this.journal.id);
+			console.log("ID------------", this.journal.id);
+			// this.savePhoto();
 			this.navCtrl.pop();
 		});
+
 
 	}
 

@@ -33,4 +33,13 @@
 			<ion-icon name="camera" (tap)="takePhoto()"></ion-icon>
 		</div>
 	</div>
+
+	
+	<div class="photos">
+		
+		<div *ngFor="let photoCount of photos" class="photo">
+			<img [src]='photoCount' *ngIf='photoCount'  >
+		</div>
+	</div>
+	
 </ion-content>
