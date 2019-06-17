@@ -1,0 +1,36 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>
+			Nota/ mes {{ month }}
+		</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<div class="inputContainer">
+
+		<ion-item>
+			<input [(ngModel)]="title" type="text" name="title" placeholder="Titulo">
+		</ion-item>
+		
+		<ion-item>
+			<label for="event_date">Fecha: </label>
+			<input  type="text" id="event_date" name="event_date" value="{{ event_date }}" readonly>
+		</ion-item>
+
+		<ion-item>
+			<textarea [(ngModel)]="content" name="context" placeholder="Escribe tu nota"></textarea>
+		</ion-item>
+	
+		<div>
+			<button (tap)="saveJournal()">
+				Guardar
+			</button>
+		</div>
+
+
+		<div>
+			<ion-icon name="camera" (tap)="takePhoto()"></ion-icon>
+		</div>
+	</div>
+</ion-content>

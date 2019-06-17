@@ -1,0 +1,31 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>
+			Mes 7
+		</ion-title>
+
+		<button (tap)='journalView()'>+</button>
+		
+
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+
+	<div>
+		<div class="journals">
+			<div *ngFor="let journal of journals">
+
+				<div *ngIf=" journal.month == 7 " >
+					<h2>{{ journal.title }}</h2>
+
+					<p> {{ journal.event_date | date }} </p>
+
+				</div>
+				
+				
+			</div>
+		</div>
+	</div>
+
+</ion-content>

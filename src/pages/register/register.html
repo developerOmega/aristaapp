@@ -1,0 +1,51 @@
+
+<ion-content no-bounce>
+  <div class="login-wrapper">
+   
+  <!--  <img src="assets/guiamed-logo.svg" class="logo"> -->
+    
+    <div class="title">Registro</div>
+    
+    <div class="login">
+
+      <div class="input-wrapper">
+        <input [(ngModel)]="email" type="email" name="email" placeholder="Correo electrónico" id="name">
+      </div>
+      <div class="input-wrapper" >
+        <input [(ngModel)]="first_name" type="text" name="first_name" placeholder="Nombre(s)" id="first_name">
+      </div>
+      <div class="input-wrapper">
+        <input [(ngModel)]="last_name" type="text" name="last_name" placeholder="Apellidos" id="last_name">
+      </div>
+      <div class="input-wrapper">
+        <input [(ngModel)]="password" type="password" name="password" placeholder="Contraseña" id="password">
+      </div>
+      <div class="input-wrapper">
+        <input [(ngModel)]="password_confirmation" type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirrma tu contraseña" >
+      </div>
+
+      <div class="input-wrapper">
+            <ion-item>
+                <ion-label>Recibir promociones</ion-label>
+                <ion-checkbox color="danger"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <ion-label id="accept_terms_label">Aceptar términos y condiciones</ion-label>
+                <ion-checkbox color="danger" id= "user_terms_contract"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+                <ion-label id="accept_privacy_label">Aceptar términos de privacidad</ion-label>
+                <ion-checkbox color="danger" id= "user_terms_privacy"></ion-checkbox>
+            </ion-item>
+      </div>
+
+      <div class="row">
+        <button class="next-button" (tap)="SaveRegister()">
+          Registrate  
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</ion-content>
