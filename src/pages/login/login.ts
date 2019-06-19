@@ -8,6 +8,7 @@ import { Data } from '../../providers/data';
 import { HomePage } from '../home/home';
 import { RegisterPage } from '../register/register';
 import { Months } from '../months/months';
+import { Facebook } from '@ionic-native/facebook';
 
 @Component({
 	selector: 'login-page',
@@ -20,13 +21,17 @@ export class LoginPage {
 	public email: any;
 	public password: any;
 
+	public user: any = {};
+  public showUser: boolean = false;
+
 	constructor(
 		public http: Http,
 		public navCtrl: NavController,
 		public apiCtrl: Api,
 		public storage: Storage,
 		public platform: Platform,
-		public loading: LoadingController
+		public loading: LoadingController,
+		public facebook: Facebook
 	){
 
 	}
@@ -81,6 +86,32 @@ export class LoginPage {
 			});
 		});
 	}
+
+	loginFacebook(){
+    this.facebook.login(['public_profile', 'email'])
+    .then(rta => {
+      console.log(rta.status);
+      if(rta.status == 'connected'){
+        this.getInfo();
+      };
+    })
+    .catch(error =>{
+      console.error( error );
+    });
+  }
+
+  getInfo(){
+    this.facebook.api('/me?fields=id,name,email,first_name,picture,last_name,gender',['public_profile','email'])
+    .then(data=>{
+      console.log(data);
+      this.showUser = true; 
+      this.user = data;
+    })
+    .catch(error =>{
+      console.error( error );
+    });
+  }
+
 
 	
 
