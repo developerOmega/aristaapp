@@ -37,6 +37,7 @@ export class LoginPage {
 	}
 
 	ionViewWillEnter(){
+		console.log("Estamos en el Login");
 	}
 
 	logIn(){
@@ -102,10 +103,11 @@ export class LoginPage {
 
   getInfo(){
     this.facebook.api('/me?fields=id,name,email,first_name,picture,last_name,gender',['public_profile','email'])
-    .then(data=>{
-      console.log(data);
+    .then(data=>{				
+
       this.showUser = true; 
       this.user = data;
+      console.log(this.user);
     })
     .catch(error =>{
       console.error( error );

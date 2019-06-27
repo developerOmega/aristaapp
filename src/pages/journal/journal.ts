@@ -7,6 +7,7 @@ import { Api } from '../../providers/api';
 import { LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
+import { JournalsService } from '../../providers/journals-service/journals-service';
 
 
 @Component({

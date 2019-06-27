@@ -5,8 +5,9 @@ import { Storage } from '@ionic/storage';
 import { Journal } from '../journal/journal';
 import { Data } from '../../providers/data';
 import { Api } from '../../providers/api';
-
 import { ShowJournal } from '../show-journal/show-journal';
+
+import { JournalsService } from '../../providers/journals-service/journals-service';
 
 
 @Component({
@@ -19,20 +20,20 @@ export class Month5 {
 
 	public journals: any;
 
+	journals_sql: any[] = [];
+
 	constructor(
 		public http: Http,
 		public navCtrl: NavController,
 		public storage: Storage,
 		public platform: Platform,
-		public apiCtrl: Api
-
+		public apiCtrl: Api,
+		public journalsService: JournalsService
 	){}
 
 	ionViewWillEnter(){
 
-		// let url = this.apiCtrl.socket + 'journals/';
-		// console.log(url);
-
+		this.getAllJournals();
 		
 		this.apiCtrl.get('journals/').then(data => {
 			console.log("asdasd", data);
@@ -58,6 +59,19 @@ export class Month5 {
 
 		this.navCtrl.push(Journal, {month: 5});
 	}
+
+//---------------------SQLite -----------------//
+	getAllJournals(){
+    this.journalsService.index()
+    .then(journals => {
+      console.log(journals);
+      this.journals_sql = journals;
+    })
+    .catch( error => {
+    	console.log("Error index: ");
+      console.error( error );
+    });
+  }
 
 
 }

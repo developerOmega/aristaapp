@@ -13,6 +13,7 @@ import { Month7 } from '../month7/month7';
 import { Month8 } from '../month8/month8';
 import { Month9 } from '../month9/month9';
 
+import { JournalsService } from '../../providers/journals-service/journals-service';
 
 @Component({
 	selector: 'months-page',
