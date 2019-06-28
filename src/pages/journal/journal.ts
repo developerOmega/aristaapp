@@ -30,6 +30,8 @@ export class Journal{
 	public count: number = 0;
 	public photos: any = [];
 
+	public newJournal: any;
+
 	constructor(
 		public http: Http,
 		public navCtrl: NavController, 
@@ -38,23 +40,22 @@ export class Journal{
 		public storage: Storage,
 		public apiCtrl: Api,
 		public loading: LoadingController,
-        public toastCtrl: ToastController,
-        public camera: Camera,
-
+    public toastCtrl: ToastController,
+    public camera: Camera,
+    public journalsService: JournalsService
 	){
 	}
 
 	ionViewWillEnter(){
-		this.month = this.navParams.get('month');
+		this.month = this.navParams.get('month'); //MES del cuadrito
 		console.log(this.month);
 
 		let date = new Date();
 
-		this.event_date = date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear();
+		//Fecha en que se creo el journal
+		this.event_date = date.getDate() + "-" + (date.getMonth() + 1 ) + "-" + date.getFullYear();
+		
 		console.log(this.event_date);
-
-
-
 	}
 
 	getJournalLast(){
@@ -63,10 +64,6 @@ export class Journal{
 			
 			this.journal = data;
 		});
-
-
-
-
 	}
 
 	takePhoto(){
@@ -112,15 +109,12 @@ export class Journal{
      	let url = 'journals/'+ id +'/photos';
 
       this.apiCtrl.post(url, body).then(data => {
-					console.log("Take Photo:", data);
-
-          
+					console.log("Take Photo:", data);      
       });
     }
 	}
 
 	saveJournal(){
-
 
 		var body: any = {
 			title: this.title,
@@ -139,7 +133,32 @@ export class Journal{
 			// this.savePhoto();
 			this.navCtrl.pop();
 		});
+	}
 
+	saveJournalSQLite(){
+
+		console.log("metodo save journal SQLite");
+    this.navCtrl.pop();
+		
+
+		var body: any = {
+			title: this.title,
+			context: this.content,
+			event_date: this.event_date,
+			create_at: this.event_date,
+			update_at: this.event_date,
+			month: this.month
+		}
+
+		this.journalsService.create(body)
+    .then(journals => {
+      console.log(journals);
+      this.newJournal = journals;
+    })
+    .catch( error => {
+    	console.log("Error create: ");
+      console.error( error );
+    });
 
 	}
 

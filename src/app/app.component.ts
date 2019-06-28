@@ -9,6 +9,9 @@ import { LoginPage } from '../pages/login/login';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx'; //for ionic v.4
 import { JournalsService } from '../providers/journals-service/journals-service';
 
+import { Months } from '../pages/months/months';
+
+
 @Component({
   templateUrl: 'app.html'
 })

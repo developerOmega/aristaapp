@@ -25,11 +25,11 @@ export class JournalsService {
   }
 
   createTable(){
-  	console.log("CreateTable journals");
+  	console.log("Create TABLE journals");
 
-	  // let sql = 'CREATE TABLE IF NOT EXISTS journals(id_journal INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, context TEXT, event_date TEXT, created_at TEXT, update_at TEXT, month INTEGER, user_id INTEGER FOREIGN KEY); ';
-	  // return this.db.executeSql(sql, []);
-
+	  let sql = 'CREATE TABLE IF NOT EXISTS journals(id_journal INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, context TEXT, event_date TEXT, created_at TEXT, update_at TEXT, month INTEGER);';
+	  
+	  return this.db.executeSql(sql, []);
   }
 
   index(){
@@ -49,23 +49,31 @@ export class JournalsService {
 	}
 
 	create(journal: any){
+		console.log("C R E A T E");
+
 	  let sql = 'INSERT INTO tasks(title, context, event_date, created_at, update_at, month) VALUES(?,?,?,?,?,?)';
 	  return this.db.executeSql(sql, [journal.title, journal.context, journal.event_date, journal.createt_at, journal.uptdate_at, journal.month]);
 	}
 
-	find_by_title(value: any) {
-	  let sql = 'SELECT * from journals WHERE title = ? AND created_at = ? AND month = ?';
+	show(value: any) {
+		console.log("S H O W");
+
+	  let sql = 'SELECT * from journals WHERE title = ?';
 	  return this.db.executeSql(sql, [value]).then(response=>{
 	  	return Promise.resolve(response.rows.item(0));
 	  });	  
 	}
 
 	update(journal: any){
+		console.log("U P D A T E");
+
   	let sql = 'UPDATE journals SET title=?, context=?,  WHERE id_journal=?';
   	return this.db.executeSql(sql, [journal.title, journal.completed, journal.id_journal]);
 	}
 
 	delete(journal: any){
+		console.log("D E L E T E");
+
 	  let sql = 'DELETE FROM journals WHERE id_journal=?';
 	  return this.db.executeSql(sql, [journal.id_journal]);
 	}

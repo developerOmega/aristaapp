@@ -20,6 +20,7 @@ export class LoginPage {
 
 	public email: any;
 	public password: any;
+	public full_name: any;
 
 	public user: any = {};
   public showUser: boolean = false;
@@ -107,15 +108,64 @@ export class LoginPage {
 
       this.showUser = true; 
       this.user = data;
-      console.log(this.user);
+
+      this.saveLoginFb(this.user);
     })
     .catch(error =>{
       console.error( error );
     });
   }
 
+  saveLoginFb(data){
 
-	
+    this.full_name = data.first_name + ' ' + data.last_name;
+
+
+    const formData = new FormData();
+
+  	formData.append("user[email]", data.email);
+  	formData.append("user[password]", "");
+    formData.append("user[password_confirmation]", "");
+    formData.append("user[full_name]", this.full_name);
+
+    let url = this.apiCtrl.socket + 'users';
+
+    var auth_token: any; 
+    var user: any;
+    let loader = this.loading.create({});
+
+    loader.present().then(() => {
+          this.http.post(url, formData ).subscribe( data => {
+            
+            console.log("CREDENCIALES CORRECTAS", data);
+
+                user = data;
+
+                user = user._body;
+
+                user = JSON.parse(user);
+
+                auth_token = user.auth_token;
+                this.storage.set("current_user", user);
+
+                this.storage.set("bearer", auth_token).then((valid) => {
+                  this.storage.set("valid",true);
+
+                  loader.dismiss();
+                  this.navCtrl.setRoot(Months);
+                });
+
+          }, error => {
+
+          console.log("INCORRECTO ", error)
+            
+            loader.dismiss();
+
+            console.log('Bearer query failed');
+          });
+        });
+
+  }
 
 
 	viewMonths(){

@@ -31,16 +31,18 @@ export class Month5 {
 		public journalsService: JournalsService
 	){}
 
-	ionViewWillEnter(){
-
-		this.getAllJournals();
+	// ionViewWillEnter(){
 		
-		this.apiCtrl.get('journals/').then(data => {
-			console.log("asdasd", data);
-			this.journals = data;
-		});
+	// 	this.apiCtrl.get('journals/').then(data => {
+	// 		console.log("asdasd", data);
+	// 		this.journals = data;
+	// 	});
 
-	}
+	// }
+
+	ionViewDidLoad() {
+   this.getAllJournals();
+  }
 
 	showJournal(journal){
 
