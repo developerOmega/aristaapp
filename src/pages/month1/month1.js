@@ -11,13 +11,18 @@ import { Component } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Journal } from '../journal/journal';
+// import { JournalsService } from '../../providers/journals-service/journals-service';
 var Month1 = /** @class */ (function () {
-    function Month1(navCtrl, storage, platform) {
+    //journals: any[] = [];
+    function Month1(navCtrl, storage, platform
+    // public journalsService: JournalsService
+    ) {
         this.navCtrl = navCtrl;
         this.storage = storage;
         this.platform = platform;
     }
     Month1.prototype.ionViewWillEnter = function () {
+        // this.getAllJournals();
     };
     Month1.prototype.journalView = function () {
         this.navCtrl.push(Journal, { month: 1 });
@@ -29,7 +34,9 @@ var Month1 = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [NavController,
             Storage,
-            Platform])
+            Platform
+            // public journalsService: JournalsService
+        ])
     ], Month1);
     return Month1;
 }());

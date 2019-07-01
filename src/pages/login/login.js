@@ -30,6 +30,7 @@ var LoginPage = /** @class */ (function () {
         this.showUser = false;
     }
     LoginPage.prototype.ionViewWillEnter = function () {
+        console.log("Estamos en el Login");
     };
     LoginPage.prototype.logIn = function () {
         var _this = this;
@@ -74,13 +75,56 @@ var LoginPage = /** @class */ (function () {
             console.error(error);
         });
     };
+    LoginPage.prototype.getInfo = function () {
+        var _this = this;
+        this.facebook.api('/me?fields=id,name,email,first_name,picture,last_name,gender', ['public_profile', 'email'])
+            .then(function (data) {
+            _this.showUser = true;
+            _this.user = data;
+            _this.saveLoginFb(_this.user);
+        })
+            .catch(function (error) {
+            console.error(error);
+        });
+    };
+    LoginPage.prototype.saveLoginFb = function (data) {
+        var _this = this;
+        this.full_name = data.first_name + ' ' + data.last_name;
+        var formData = new FormData();
+        formData.append("user[email]", data.email);
+        formData.append("user[password]", "");
+        formData.append("user[password_confirmation]", "");
+        formData.append("user[full_name]", this.full_name);
+        var url = this.apiCtrl.socket + 'users';
+        var auth_token;
+        var user;
+        var loader = this.loading.create({});
+        loader.present().then(function () {
+            _this.http.post(url, formData).subscribe(function (data) {
+                console.log("CREDENCIALES CORRECTAS", data);
+                user = data;
+                user = user._body;
+                user = JSON.parse(user);
+                auth_token = user.auth_token;
+                _this.storage.set("current_user", user);
+                _this.storage.set("bearer", auth_token).then(function (valid) {
+                    _this.storage.set("valid", true);
+                    loader.dismiss();
+                    _this.navCtrl.setRoot(Months);
+                });
+            }, function (error) {
+                console.log("INCORRECTO ", error);
+                loader.dismiss();
+                console.log('Bearer query failed');
+            });
+        });
+    };
     LoginPage.prototype.viewMonths = function () {
         this.navCtrl.push(Months);
     };
     LoginPage.prototype.Registration = function () {
         this.navCtrl.push(RegisterPage);
     };
-    var _a;
     LoginPage = __decorate([
         Component({
             selector: 'login-page',
@@ -92,7 +136,8 @@ var LoginPage = /** @class */ (function () {
             Api,
             Storage,
             Platform,
-            LoadingController, typeof (_a = typeof Facebook !== "undefined" && Facebook) === "function" ? _a : Object])
+            LoadingController,
+            Facebook])
     ], LoginPage);
     return LoginPage;
 }());

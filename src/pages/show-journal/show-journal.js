@@ -23,7 +23,7 @@ var ShowJournal = /** @class */ (function () {
         this.apiCtrl = apiCtrl;
     }
     ShowJournal.prototype.ionViewWillEnter = function () {
-        this.journals = this.navParams.get('journals');
+        this.journals = this.navParams.get('infoJournal');
         this.title = this.journals.title;
         this.content = this.journals.context;
         console.log("SHOW", this.journals.title);

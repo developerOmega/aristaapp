@@ -11,6 +11,21 @@
 </ion-header>
 
 <ion-content>
+<div>
+		<div class="journals">
 
-	<p>Mes 2</p>
+			<div *ngFor="let journal of journals_sql">
+
+				<div *ngIf=" journal.month == 2">
+					
+					<h2 (tap)="showJournalSQL(journal)">{{ journal.title }}</h2>
+
+					<p> {{ journal.event_date | date }} </p>
+
+				</div>
+							
+			</div>
+		</div>
+	</div>
+	
 </ion-content>

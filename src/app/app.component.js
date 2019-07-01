@@ -11,22 +11,49 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { LoginPage } from '../pages/login/login';
+// import { SQLite, SQLiteObject } from '@ionic-native/sqlite/';
+import { SQLite } from '@ionic-native/sqlite'; //for ionic v.4
+import { JournalsService } from '../providers/journals-service/journals-service';
+import { Months } from '../pages/months/months';
 var MyApp = /** @class */ (function () {
-    function MyApp(platform, statusBar, splashScreen) {
-        this.rootPage = LoginPage;
+    function MyApp(platform, statusBar, splashScreen, sqlite, journalsService) {
+        var _this = this;
+        this.sqlite = sqlite;
+        this.journalsService = journalsService;
+        this.rootPage = Months;
         platform.ready().then(function () {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             statusBar.styleDefault();
             splashScreen.hide();
+            _this.createDatabase();
         });
     }
+    MyApp.prototype.createDatabase = function () {
+        var _this = this;
+        this.sqlite.create({
+            name: 'arista.db',
+            location: 'default' // the location field is required
+        })
+            .then(function (db) {
+            _this.journalsService.setDatabase(db);
+            _this.journalsService.createTable();
+            console.log("BD: ", db);
+        })
+            .catch(function (error) {
+            console.log("Error al crear la BD: ");
+            console.error(error);
+        });
+    };
     MyApp = __decorate([
         Component({
             templateUrl: 'app.html'
         }),
-        __metadata("design:paramtypes", [Platform, StatusBar, SplashScreen])
+        __metadata("design:paramtypes", [Platform,
+            StatusBar,
+            SplashScreen,
+            SQLite,
+            JournalsService])
     ], MyApp);
     return MyApp;
 }());

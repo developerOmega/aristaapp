@@ -14,7 +14,7 @@
 	
 	<div>
 		<div class="journals">
-			<div *ngFor="let journal of journals">
+<!-- 			<div *ngFor="let journal of journals">
 
 				<div *ngIf=" journal.month == 5 " >
 					<h2 (tap)="showJournal( journal )">{{ journal.title }}</h2>
@@ -22,9 +22,19 @@
 					<p> {{ journal.event_date | date }} </p>
 
 				</div>
-				
+							
+			</div> -->
 
-				
+			<div *ngFor="let journal of journals_sql">
+
+				<div *ngIf=" journal.month == 5">
+					
+					<h2 (tap)="showJournalSQL(journal)">{{ journal.title }}</h2>
+
+					<p> {{ journal.event_date | date }} </p>
+
+				</div>
+							
 			</div>
 		</div>
 	</div>

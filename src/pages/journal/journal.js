@@ -15,8 +15,9 @@ import { Data } from '../../providers/data';
 import { Api } from '../../providers/api';
 import { LoadingController } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
+import { JournalsService } from '../../providers/journals-service/journals-service';
 var Journal = /** @class */ (function () {
-    function Journal(http, navCtrl, navParams, platform, storage, apiCtrl, loading, toastCtrl, camera) {
+    function Journal(http, navCtrl, navParams, platform, storage, apiCtrl, loading, toastCtrl, camera, journalsService) {
         this.http = http;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
@@ -26,6 +27,7 @@ var Journal = /** @class */ (function () {
         this.loading = loading;
         this.toastCtrl = toastCtrl;
         this.camera = camera;
+        this.journalsService = journalsService;
         this.event_date = '';
         this.title = '';
         this.content = '';
@@ -33,10 +35,11 @@ var Journal = /** @class */ (function () {
         this.photos = [];
     }
     Journal.prototype.ionViewWillEnter = function () {
-        this.month = this.navParams.get('month');
+        this.month = this.navParams.get('month'); //MES del cuadrito
         console.log(this.month);
         var date = new Date();
-        this.event_date = date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear();
+        //Fecha en que se creo el journal
+        this.event_date = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
         console.log(this.event_date);
     };
     Journal.prototype.getJournalLast = function () {
@@ -98,6 +101,34 @@ var Journal = /** @class */ (function () {
             _this.navCtrl.pop();
         });
     };
+    Journal.prototype.saveJournalSQLite = function () {
+        var _this = this;
+        console.log("metodo save journal SQLite");
+        var body = {
+            title: this.title,
+            context: this.content,
+            event_date: this.event_date,
+            create_at: this.event_date,
+            update_at: this.event_date,
+            month: this.month
+        };
+        // console.log("body titulo -----", body.title );
+        // console.log("body content----", body.context );
+        // console.log("body E D----", body.event_date );
+        // console.log("body C D----", body.create_at );
+        // console.log("body U D----", body.update_at );
+        // console.log("body month----", body.month );
+        this.journalsService.create(body)
+            .then(function (journals) {
+            console.log("Exitoso ", JSON.stringify(journals));
+            _this.newJournal = journals;
+        })
+            .catch(function (error) {
+            console.log("Error create: ", JSON.stringify(error));
+            // console.error( error );
+        });
+        this.navCtrl.pop();
+    };
     Journal = __decorate([
         Component({
             selector: 'journal-page',
@@ -112,7 +143,8 @@ var Journal = /** @class */ (function () {
             Api,
             LoadingController,
             ToastController,
-            Camera])
+            Camera,
+            JournalsService])
     ], Journal);
     return Journal;
 }());

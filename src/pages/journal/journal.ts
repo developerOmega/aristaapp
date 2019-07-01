@@ -7,7 +7,10 @@ import { Api } from '../../providers/api';
 import { LoadingController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
+import { ShowJournal } from '../show-journal/show-journal';
+
 import { JournalsService } from '../../providers/journals-service/journals-service';
+import { PhotosService } from '../../providers/photos-service/photos-service';
 
 
 @Component({
@@ -29,6 +32,7 @@ export class Journal{
 	public journal_id: any;
 	public count: number = 0;
 	public photos: any = [];
+	public photosSQL: any = [];
 
 	public newJournal: any;
 
@@ -42,7 +46,8 @@ export class Journal{
 		public loading: LoadingController,
     public toastCtrl: ToastController,
     public camera: Camera,
-    public journalsService: JournalsService
+    public journalsService: JournalsService,
+    public photosService: PhotosService
 	){
 	}
 
@@ -63,6 +68,8 @@ export class Journal{
 			console.log('JORUNALSGET:', data);
 			
 			this.journal = data;
+			console.log('this --- JORUNALSGET:', this.journal);
+
 		});
 	}
 
@@ -85,11 +92,15 @@ export class Journal{
 		  
 		  this.count++;
 
-			this.getJournalLast();
+			this.getJournalLast(); //Mostar fotos :( aiuda??
+
 			// var body: any = {
 			// 	photo: this.photo,
 
 			// }
+
+
+
 		}, 
 		(err) => {
 		 	console.log("Error: ", err);
@@ -136,10 +147,7 @@ export class Journal{
 	}
 
 	saveJournalSQLite(){
-
 		console.log("metodo save journal SQLite");
-    this.navCtrl.pop();
-		
 
 		var body: any = {
 			title: this.title,
@@ -152,15 +160,94 @@ export class Journal{
 
 		this.journalsService.create(body)
     .then(journals => {
-      console.log(journals);
+      console.log("Exitoso ----- ", JSON.stringify(journals));
+
       this.newJournal = journals;
+    	// console.log("JOURNAL ALV ", JSON.stringify(this.newJournal));
+
+     	this.savePhotoSQL(this.newJournal.insertId);
+    	console.log("ID ", this.newJournal.insertId);
+
     })
     .catch( error => {
-    	console.log("Error create: ");
-      console.error( error );
+    	console.log("Error create: ", JSON.stringify(error));
+      // console.error( error );
     });
 
+
+    this.navCtrl.pop();
 	}
+
+
+	savePhotoSQL(id){
+
+		for(let i = 0; i < this.photos.length; i++){
+
+			let body: any = {
+
+	      src: this.photos[i],
+	      create_at: this.event_date,
+				update_at: this.event_date,
+	      journal_id: id
+	      
+	    };
+
+    	console.log("TODOS ALV" , body.src,	body.create_at, body.update_at ,body.journal_id );
+
+
+
+	    this.photosService.create(body)
+		  .then(photo => {
+		  	console.log("Exitoso save photo", JSON.stringify(photo));
+
+			  // this.photosSQL.push(photo);
+			})
+			.catch( error => {
+				console.log("Error create photos: ", JSON.stringify(error));
+			      // console.error( error );
+			});
+
+		}
+
+
+	}
+
+
+	// savePhotoSQL(id){
+
+	// 	console.log("funcion save photo journal", this.photos.length );
+
+	// 	for(let i = 0; i < this.photos.length; i++){
+	      
+	//       let body: any = {
+	//           src: this.photos[i],
+	//          	create_at: this.event_date,
+	// 					update_at: this.event_date,
+	// 					journal_id: id     
+	//      	};
+
+	//      	//console.log("Imprimir FFFFFFFF ---",  body.src, body.create_at, body.update_at, body.journal_id)
+
+	//      	this.photosService.create(body)
+	//      	.then(photo => {
+	//       	console.log("Exitoso save photo", JSON.stringify(photo));
+	//       	this.photosSQL.push(photo.src);
+	//       	if(i == this.photos.length){
+	//       		this.navCtrl.push(ShowJournal, {allPhotos: photo});
+	//       	}
+	// 	    })
+	// 	    .catch( error => {
+	// 	    	console.log("Error create photos: ", JSON.stringify(error));
+	// 	      // console.error( error );
+	// 	    });
+	    
+	//   }
+
+
+	// 	console.log("photos sql", this.photosSQL.length);
+
+	//   this.navCtrl.push(ShowJournal, {infoPhotos: this.photosSQL });
+	// }
 
 
 }

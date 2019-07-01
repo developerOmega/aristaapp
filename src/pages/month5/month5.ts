@@ -9,7 +9,6 @@ import { ShowJournal } from '../show-journal/show-journal';
 
 import { JournalsService } from '../../providers/journals-service/journals-service';
 
-
 @Component({
 	selector: 'month5-page',
 	templateUrl: 'month5.html',
@@ -44,6 +43,11 @@ export class Month5 {
    this.getAllJournals();
   }
 
+  ionViewWillEnter(){
+		this.getAllJournals();
+	}
+
+
 	showJournal(journal){
 
 		let url_id = 'journals/' + journal.id; 
@@ -57,6 +61,7 @@ export class Month5 {
 		});
 	}
 
+	
 	journalView(){
 
 		this.navCtrl.push(Journal, {month: 5});
@@ -66,11 +71,38 @@ export class Month5 {
 	getAllJournals(){
     this.journalsService.index()
     .then(journals => {
-      console.log(journals);
+      console.log("JOURNALS ",journals);
       this.journals_sql = journals;
     })
     .catch( error => {
     	console.log("Error index: ");
+      console.error( error );
+    });
+  }
+
+  showJournalSQL(journal){
+  	this.journalsService.show(journal.id)
+  	.then(journal => {
+      console.log("JOURNAL ",journal);
+      
+      this.navCtrl.push(ShowJournal, {infoJournal: journal});
+    })
+    .catch( error => {
+    	console.log("Error show journal: ");
+      console.error( error );
+    });
+
+  }
+
+  showPhotosSQL(photo){
+  	this.journalsService.show(photo.id)
+  	.then(photos => {
+      console.log("PHOTOS ",photos);
+      
+      this.navCtrl.push(ShowJournal, {infoPhoto: photos});
+    })
+    .catch( error => {
+    	console.log("Error show photos: ");
       console.error( error );
     });
   }

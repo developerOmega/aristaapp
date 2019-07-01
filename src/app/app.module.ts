@@ -8,7 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Camera } from '@ionic-native/camera';
 import { Facebook } from '@ionic-native/facebook';
 // import { SQLite, SQLiteObject } from '@ionic-native/sqlite/';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx'; //for ionic v.4
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite'; //for ionic v.4
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -33,6 +33,7 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 
 import { IonicStorageModule } from '@ionic/storage';
+import { PhotosService } from '../providers/photos-service/photos-service';
 //import { JournalsServiceProvider } from '../providers/journals-service/journals-service';
 
 
@@ -88,7 +89,8 @@ import { IonicStorageModule } from '@ionic/storage';
     SQLite,
     JournalsService,
     Facebook,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    PhotosService
   ]
 })
 export class AppModule {}

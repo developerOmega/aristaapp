@@ -15,22 +15,25 @@ import { Journal } from '../journal/journal';
 import { Data } from '../../providers/data';
 import { Api } from '../../providers/api';
 import { ShowJournal } from '../show-journal/show-journal';
+import { JournalsService } from '../../providers/journals-service/journals-service';
 var Month5 = /** @class */ (function () {
-    function Month5(http, navCtrl, storage, platform, apiCtrl) {
+    function Month5(http, navCtrl, storage, platform, apiCtrl, journalsService) {
         this.http = http;
         this.navCtrl = navCtrl;
         this.storage = storage;
         this.platform = platform;
         this.apiCtrl = apiCtrl;
+        this.journalsService = journalsService;
+        this.journals_sql = [];
     }
-    Month5.prototype.ionViewWillEnter = function () {
-        // let url = this.apiCtrl.socket + 'journals/';
-        // console.log(url);
-        var _this = this;
-        this.apiCtrl.get('journals/').then(function (data) {
-            console.log("asdasd", data);
-            _this.journals = data;
-        });
+    // ionViewWillEnter(){
+    // 	this.apiCtrl.get('journals/').then(data => {
+    // 		console.log("asdasd", data);
+    // 		this.journals = data;
+    // 	});
+    // }
+    Month5.prototype.ionViewDidLoad = function () {
+        this.getAllJournals();
     };
     Month5.prototype.showJournal = function (journal) {
         var _this = this;
@@ -41,8 +44,36 @@ var Month5 = /** @class */ (function () {
             _this.navCtrl.push(ShowJournal, { journals: data });
         });
     };
+    Month5.prototype.ionViewWillEnter = function () {
+        this.getAllJournals();
+    };
     Month5.prototype.journalView = function () {
         this.navCtrl.push(Journal, { month: 5 });
+    };
+    //---------------------SQLite -----------------//
+    Month5.prototype.getAllJournals = function () {
+        var _this = this;
+        this.journalsService.index()
+            .then(function (journals) {
+            console.log("JOURNALS ", journals);
+            _this.journals_sql = journals;
+        })
+            .catch(function (error) {
+            console.log("Error index: ");
+            console.error(error);
+        });
+    };
+    Month5.prototype.showJournalSQL = function (journal) {
+        var _this = this;
+        this.journalsService.show(journal.id)
+            .then(function (journal) {
+            console.log("JOURNAL ", journal);
+            _this.navCtrl.push(ShowJournal, { infoJournal: journal });
+        })
+            .catch(function (error) {
+            console.log("Error index: ");
+            console.error(error);
+        });
     };
     Month5 = __decorate([
         Component({
@@ -54,7 +85,8 @@ var Month5 = /** @class */ (function () {
             NavController,
             Storage,
             Platform,
-            Api])
+            Api,
+            JournalsService])
     ], Month5);
     return Month5;
 }());

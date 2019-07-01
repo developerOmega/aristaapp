@@ -2,9 +2,16 @@ months-page {
 	
 	
 	.header{
+		display: flex;
+
+		align-items: center;
 		.title{
 			padding: 20px;
 			
+		}
+		.settings{
+			margin: 0 10px;
+			font-size: 35px;
 		}
 	}
 

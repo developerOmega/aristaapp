@@ -11,6 +11,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Camera } from '@ionic-native/camera';
 import { Facebook } from '@ionic-native/facebook';
+// import { SQLite, SQLiteObject } from '@ionic-native/sqlite/';
+import { SQLite } from '@ionic-native/sqlite'; //for ionic v.4
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
@@ -27,9 +29,12 @@ import { Month7 } from '../pages/month7/month7';
 import { Month8 } from '../pages/month8/month8';
 import { Month9 } from '../pages/month9/month9';
 import { ShowJournal } from '../pages/show-journal/show-journal';
+import { JournalsService } from '../providers/journals-service/journals-service';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
+import { PhotosService } from '../providers/photos-service/photos-service';
+//import { JournalsServiceProvider } from '../providers/journals-service/journals-service';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -83,8 +88,11 @@ var AppModule = /** @class */ (function () {
                 StatusBar,
                 SplashScreen,
                 Camera,
+                SQLite,
+                JournalsService,
                 Facebook,
-                { provide: ErrorHandler, useClass: IonicErrorHandler }
+                { provide: ErrorHandler, useClass: IonicErrorHandler },
+                PhotosService
             ]
         })
     ], AppModule);
