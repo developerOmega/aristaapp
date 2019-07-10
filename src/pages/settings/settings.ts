@@ -21,6 +21,9 @@ import { PhotosService } from '../../providers/photos-service/photos-service';
 export class Settings{
 	
 	public valor : any;
+	public journal: any;
+	public photo: any;
+	public journal_parameter: any
 
 	constructor(
 		public http: Http,
@@ -32,7 +35,8 @@ export class Settings{
 		public viewCtrl: ViewController,
 		public alertCtrl: AlertController,
 		public journalsService: JournalsService,
-    public photosService: PhotosService
+    	public photosService: PhotosService,
+    	public apiCtrl: Api 
 	){}
 
 	ionViewDidLoad(){
@@ -121,40 +125,93 @@ export class Settings{
 	}
 
 	updateJournals(){
-		console.log("Subiendo datos");
-
-		let journal;
-		let photo;
+		console.log("Subiendo datos journals");
 
 		this.journalsService.index()
-    .then(journals => {
-      console.log("JOURNALS ",JSON.stringify(journals));
-      journal = journals;
+	    .then(journals => {
+	      console.log("JOURNALS ",JSON.stringify(journals));
+	      this.journal = journals;
 
-      console.log("id", JSON.stringify(journal.id) );
+	      console.log("INDEX", JSON.stringify(this.journal) );
+	      console.log("NUMERO", this.journal.length );
 
-    })
-    .catch( error => {
-    	console.log("Error index: ");
-      console.error( error );
-    });
+	      for (let i = 0; i < this.journal.length; i++) {
+	      	console.log("ID POR JOURNAL", this.journal[i].id );
 
-		
+	      	let body: any = {
+	      		title: this.journal[i].title,
+	      		month: this.journal[i].month,
+	      		context: this.journal[i].context,
+	      		event_date: this.journal[i].event_date,
+	      	};
+
+	      	this.apiCtrl.post('journals', body).then(data => {
+
+	      		console.log("----EXITO -- JOURNALS ----");
+	      		console.log("DATA JOURNALS -- ", JSON.stringify(data));
+
+	      		this.journal_parameter = data;
+
+	        	this.updatePhotos(this.journal[i]);
 
 
 
-    // this.photosService.index(journal.id)
-    // .then(photos => {
-    //   console.log("PHOTOS ", photos);
-    //   photo = photos;
-    // })
-    // .catch( error => {
-    // 	console.log("Error index photos: ");
-    //   console.error( error );
-    // });
+
+	      	}).catch(error => {
+
+	      		console.log("Error JOURNAL: ", error);
+
+	      	});
 
 
+
+
+	      	
+	      }
+
+	    })
+	    .catch( error => {
+	    	console.log("Error index: ");
+	      console.error( error );
+	    });
 	}
+
+	updatePhotos(journal){
+
+		console.log("Subiendo datos de fotos");
+
+
+
+		this.photosService.index(journal.id).then(photos => {
+			//console.log("PHOTOS: ", JSON.stringify(photos));
+			this.photo = photos;
+
+			console.log("NUMERO DE FOTOS POR JORUNAL, ", this.photo.length);
+
+			for (let i = 0; i < this.photo.length; i++) {
+				console.log("ID DE PHOTO: ", this.photo[i].id);
+
+				let body: any = {
+					src: this.photo[i].src,
+					journal_id: this.journal_parameter.id
+				}
+
+				let url = 'journals/' + this.journal_parameter.id + '/photos'; 
+
+				this.apiCtrl.post(url, body).then(data => {
+					console.log("----- EXITO -- PHOTOS -----");
+					console.log("DATA PHOTOS -- ", data);
+				}).catch(error => {
+					console.log("Error PHOTO: ", JSON.stringify(error));
+				});
+
+			}
+		}).catch(error => {
+			console.log("Error index photos: ");
+			console.error(JSON.stringify(error));
+		});
+	}
+
 
 
 

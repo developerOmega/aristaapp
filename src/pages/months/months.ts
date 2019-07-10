@@ -84,12 +84,12 @@ export class Months{
 	// 	this.navCtrl.push(Settings);
 	// }
 
-	 presentPopover(myEvent) {
-    let popover = this.popoverController.create(Settings);
-    popover.present({
-      ev: myEvent
-    });
-  }
+	presentPopover(myEvent) {
+	    let popover = this.popoverController.create(Settings);
+	    popover.present({
+	      ev: myEvent
+	    });
+	}
 
 
 

@@ -73,6 +73,9 @@ export class Month5 {
     .then(journals => {
       console.log("JOURNALS ",journals);
       this.journals_sql = journals;
+
+      
+      	
     })
     .catch( error => {
     	console.log("Error index: ");

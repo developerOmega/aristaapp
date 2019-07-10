@@ -82,7 +82,7 @@ export class RegisterPage{
 
           }, error => {
 
-          console.log("INCORRECTO ", error)
+          console.log("INCORRECTO ", JSON.stringify(error))
             
             loader.dismiss();
 
