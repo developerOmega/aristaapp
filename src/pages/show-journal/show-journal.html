@@ -1,24 +1,26 @@
 <ion-header>
 	<ion-navbar>
 		<ion-title>
-			MES 2 - {{ title }}
+			<div class="header">
+				<div>
+				{{ title }}
+				</div>
+
+				<div>
+					Mes {{ month }}
+				</div>
+			</div>
+			
 		</ion-title>
 	</ion-navbar>
 </ion-header>
 
 <ion-content>
 		
-	<p> {{ content }} </p>
-	<p>{{ id }}</p>
-
-	<!-- <div *ngFor="let photo of allphotos">
-		<p> El id es:  {{photo.id}} </p>
-
-		<br/>			
-	</div> -->
+	<p>Journal: {{ content }} </p>
+	<p>Id del Journal: {{ id }}</p>
 
 	<div *ngFor="let photo of photos">
-		<p> El id es:  {{photo.id}} </p>
 		<img [src]="photo.src">
 
 		<br/>			

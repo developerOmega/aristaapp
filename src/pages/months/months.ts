@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, PopoverController } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
 import { Storage } from '@ionic/storage';
 
@@ -12,6 +12,7 @@ import { Month6 } from '../month6/month6';
 import { Month7 } from '../month7/month7';
 import { Month8 } from '../month8/month8';
 import { Month9 } from '../month9/month9';
+import { Settings } from '../settings/settings';
 
 import { JournalsService } from '../../providers/journals-service/journals-service';
 
@@ -21,15 +22,24 @@ import { JournalsService } from '../../providers/journals-service/journals-servi
 })
 
 export class Months{
+	public auth : any;
+	public usuario: any;
 
 	constructor(
 		public http: Http,
 		public navCtrl: NavController,
 		public storage: Storage,
 		public platform: Platform,
+		public popoverController: PopoverController
+		
 
 	){
+			this.auth = this.storage.get("bearer");
+	}
 
+	ionViewWillEnter(){
+		console.log("token", this.auth);
+		console.log("valid", this.storage.get("valid"));
 	}
 
 	viewMonthOne(){
@@ -69,6 +79,17 @@ export class Months{
 	viewMonthNine(){
 		this.navCtrl.push(Month9);
 	}
+
+	// viewSettings(){
+	// 	this.navCtrl.push(Settings);
+	// }
+
+	 presentPopover(myEvent) {
+    let popover = this.popoverController.create(Settings);
+    popover.present({
+      ev: myEvent
+    });
+  }
 
 
 

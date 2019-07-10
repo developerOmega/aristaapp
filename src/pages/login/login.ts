@@ -73,14 +73,20 @@ export class LoginPage {
 
 				this.storage.set("current_user", user);
 
-				this.storage.set("bearer", auth_token).then((valid) => {
-					this.storage.set("valid",true);
+				// this.storage.set("bearer", auth_token).then((valid) => {
+				// 	this.storage.set("valid",true);
 
-					loader.dismiss();
-					this.navCtrl.setRoot(Months);
-				});
-		
+				// 	loader.dismiss();
+				// 	this.navCtrl.setRoot(Months);
+				// });
+
+				this.storage.set("bearer", auth_token);
+        this.storage.set("valid", true);
+        loader.dismiss();
+        this.navCtrl.setRoot(Months);
+                
 			}, error => {
+        this.storage.set("valid", false);          
 
 				console.log("Error");
 				loader.dismiss();

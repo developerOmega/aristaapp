@@ -1,12 +1,11 @@
 <ion-header>
 	<ion-navbar>
-		<ion-title>
-			mes 5
-		</ion-title>
-
-		<button (tap)='journalView()'>+</button>
-		
-
+		<div class="header">
+			<ion-title>
+				mes 5
+			</ion-title>
+			<ion-icon name="add" class="add" (tap)='journalView()'></ion-icon>
+		</div>
 	</ion-navbar>
 </ion-header>
 
@@ -33,7 +32,10 @@
 
 					<p> {{ journal.event_date | date }} </p>
 
+					<p> Id del Journal: {{ journal.id }} </p>
+
 				</div>
+
 							
 			</div>
 		</div>

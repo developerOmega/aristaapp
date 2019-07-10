@@ -1,0 +1,13 @@
+<ion-content>
+	<ion-list>
+      <ion-list-header>Opciones</ion-list-header>
+      <button ion-item (tap)="buyAlbum()">Comprar álbum</button>
+      <div id="sub_options" class="sub_options">
+      	<button ion-item (tap)="viewLogin()">Iniciar sesión</button>
+      	<button ion-item (tap)="viewRegister()">Regístrate</button>	     	
+      </div>
+
+      <button ion-item id="closeSession" (tap)="destroySession()">Cerrar sesión</button>
+      <button ion-item (tap)="close()">Cerrar</button>	
+    </ion-list>
+</ion-content>

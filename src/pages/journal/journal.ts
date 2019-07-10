@@ -92,15 +92,7 @@ export class Journal{
 		  
 		  this.count++;
 
-			this.getJournalLast(); //Mostar fotos :( aiuda??
-
-			// var body: any = {
-			// 	photo: this.photo,
-
-			// }
-
-
-
+			// this.getJournalLast(); //Mostar fotos :( aiuda??
 		}, 
 		(err) => {
 		 	console.log("Error: ", err);
@@ -192,62 +184,18 @@ export class Journal{
 	      
 	    };
 
-    	console.log("TODOS ALV" , body.src,	body.create_at, body.update_at ,body.journal_id );
-
-
+    	console.log("body photos: " , body.src,	body.create_at, body.update_at ,body.journal_id );
 
 	    this.photosService.create(body)
 		  .then(photo => {
 		  	console.log("Exitoso save photo", JSON.stringify(photo));
 
-			  // this.photosSQL.push(photo);
 			})
 			.catch( error => {
 				console.log("Error create photos: ", JSON.stringify(error));
-			      // console.error( error );
 			});
-
 		}
-
-
 	}
-
-
-	// savePhotoSQL(id){
-
-	// 	console.log("funcion save photo journal", this.photos.length );
-
-	// 	for(let i = 0; i < this.photos.length; i++){
-	      
-	//       let body: any = {
-	//           src: this.photos[i],
-	//          	create_at: this.event_date,
-	// 					update_at: this.event_date,
-	// 					journal_id: id     
-	//      	};
-
-	//      	//console.log("Imprimir FFFFFFFF ---",  body.src, body.create_at, body.update_at, body.journal_id)
-
-	//      	this.photosService.create(body)
-	//      	.then(photo => {
-	//       	console.log("Exitoso save photo", JSON.stringify(photo));
-	//       	this.photosSQL.push(photo.src);
-	//       	if(i == this.photos.length){
-	//       		this.navCtrl.push(ShowJournal, {allPhotos: photo});
-	//       	}
-	// 	    })
-	// 	    .catch( error => {
-	// 	    	console.log("Error create photos: ", JSON.stringify(error));
-	// 	      // console.error( error );
-	// 	    });
-	    
-	//   }
-
-
-	// 	console.log("photos sql", this.photosSQL.length);
-
-	//   this.navCtrl.push(ShowJournal, {infoPhotos: this.photosSQL });
-	// }
 
 
 }

@@ -24,6 +24,7 @@ export class ShowJournal{
 	public photos : any = [];
 	public allphotos: any;
 	public idphoto: any;
+	public month: any;
 
 	constructor(
 		public http: Http,
@@ -44,8 +45,9 @@ export class ShowJournal{
 		this.id = this.journals.id;
 		this.title = this.journals.title;
 		this.content = this.journals.context;
+		this.month = this.journals.month;
 
-		
+
 
 
 

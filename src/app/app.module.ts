@@ -26,6 +26,10 @@ import { Month7 } from '../pages/month7/month7';
 import { Month8 } from '../pages/month8/month8';
 import { Month9 } from '../pages/month9/month9';
 import { ShowJournal } from '../pages/show-journal/show-journal';
+import { Settings } from '../pages/settings/settings';
+
+
+
 
 import { JournalsService } from '../providers/journals-service/journals-service';
 
@@ -54,7 +58,8 @@ import { PhotosService } from '../providers/photos-service/photos-service';
     Month7,
     Month8,
     Month9,
-    ShowJournal
+    ShowJournal,
+    Settings
   ],
   imports: [
     BrowserModule,
@@ -80,7 +85,8 @@ import { PhotosService } from '../providers/photos-service/photos-service';
     Month7,
     Month8,
     Month9,
-    ShowJournal
+    ShowJournal,
+    Settings
   ],
   providers: [
     StatusBar,
