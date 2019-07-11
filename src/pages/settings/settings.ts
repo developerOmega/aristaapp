@@ -8,6 +8,9 @@ import { Api } from '../../providers/api';
 import { LoginPage } from '../login/login';
 import { RegisterPage } from '../register/register';
 import { Months } from '../months/months';
+import { LoadingController } from 'ionic-angular';
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { Subscription } from 'rxjs';
 
 import { JournalsService } from '../../providers/journals-service/journals-service';
 import { PhotosService } from '../../providers/photos-service/photos-service';
@@ -24,6 +27,7 @@ export class Settings{
 	public journal: any;
 	public photo: any;
 	public journal_parameter: any
+	public worker: Subscription;
 
 	constructor(
 		public http: Http,
@@ -36,12 +40,20 @@ export class Settings{
 		public alertCtrl: AlertController,
 		public journalsService: JournalsService,
     	public photosService: PhotosService,
-    	public apiCtrl: Api 
-	){}
+    	public loading: LoadingController,
+    	public apiCtrl: Api,
+    	public backgroundMode: BackgroundMode 
+	){
+		
+	}
 
 	ionViewDidLoad(){
-  	document.getElementById('sub_options').style.display = "none";
-  	document.getElementById('closeSession').style.display = "none";
+	  	document.getElementById('sub_options').style.display = "none";
+	  	document.getElementById('closeSession').style.display = "none";
+
+	 //  	this.backgroundMode.addEventListener( ' deviceready ' , function () {
+	 //     // cordova.plugins.backgroundMode ya está disponible 
+		// }, false );
 	}
 
 	close() {
@@ -99,7 +111,21 @@ export class Settings{
 	        handler: () => {
 
 	          console.log('Buy clicked');
-	          this.updateJournals();
+	          this.worker = this.backgroundMode.on('enable').subscribe(() => this.updateJournals(12));
+
+	          //let loader = this.loading.create({})
+
+
+
+	   //        loader.present().then(()=>{
+
+
+	   //       	// this.updateJournals(loader);
+
+	   //        }).catch(error => {
+	   //        	console.error("Error de loading: ", error);
+				// loader.dismiss();
+	   //        });
 	        }
 	      }
     	]
@@ -124,7 +150,7 @@ export class Settings{
 	  alert.present();
 	}
 
-	updateJournals(){
+	updateJournals(loader){
 		console.log("Subiendo datos journals");
 
 		this.journalsService.index()
@@ -152,8 +178,7 @@ export class Settings{
 
 	      		this.journal_parameter = data;
 
-	        	this.updatePhotos(this.journal[i]);
-
+	        	this.updatePhotos(this.journal[i], loader, i);
 
 
 
@@ -163,10 +188,6 @@ export class Settings{
 
 	      	});
 
-
-
-
-	      	
 	      }
 
 	    })
@@ -176,7 +197,7 @@ export class Settings{
 	    });
 	}
 
-	updatePhotos(journal){
+	updatePhotos(journal, loader, count_journal){
 
 		console.log("Subiendo datos de fotos");
 
@@ -201,11 +222,20 @@ export class Settings{
 				this.apiCtrl.post(url, body).then(data => {
 					console.log("----- EXITO -- PHOTOS -----");
 					console.log("DATA PHOTOS -- ", data);
+
+					if (i == this.photo.length-1 && count_journal == this.journal.length-1) {
+						console.log("AQUI FINALIZA EL LOADING POR FIN!!!!!:" , i);
+						//loader.dismiss();
+
+					}
+
+
 				}).catch(error => {
 					console.log("Error PHOTO: ", JSON.stringify(error));
 				});
 
 			}
+
 		}).catch(error => {
 			console.log("Error index photos: ");
 			console.error(JSON.stringify(error));

@@ -9,6 +9,7 @@ import { Camera } from '@ionic-native/camera';
 import { Facebook } from '@ionic-native/facebook';
 // import { SQLite, SQLiteObject } from '@ionic-native/sqlite/';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite'; //for ionic v.4
+import { BackgroundMode } from '@ionic-native/background-mode'; // version @4.0.1
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -95,6 +96,7 @@ import { PhotosService } from '../providers/photos-service/photos-service';
     SQLite,
     JournalsService,
     Facebook,
+    BackgroundMode,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     PhotosService
   ]
